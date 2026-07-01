@@ -1,0 +1,28 @@
+# Override of parent theme query: reduce default `first` to avoid large memory usage during prerender
+# This file in the root layer overrides woonuxt_base/app/queries/getProducts.gql
+query getProducts($after: String, $slug: [String], $first: Int = 48, $orderby: ProductsOrderByEnum = DATE) {
+  products(
+    first: $first
+    after: $after
+    where: { categoryIn: $slug, visibility: VISIBLE, minPrice: 0, orderby: { field: $orderby, order: DESC }, status: "publish" }
+  ) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    nodes {
+      name
+      slug
+      type
+      databaseId
+      id
+      averageRating
+      reviewCount
+      ...Terms
+      ...ProductCategories
+      ...SimpleProduct
+      ...VariableProduct
+      ...ExternalProduct
+    }
+  }
+}
