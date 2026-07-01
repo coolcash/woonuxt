@@ -30,6 +30,7 @@ export default defineNuxtConfig({
       crawlLinks: false,
       routes: [
         '/',
+        '/products',
         '/custom-designed-t-shirts',
       ],
       failOnError: false,

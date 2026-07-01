@@ -1,10 +1,11 @@
 <script setup lang="ts">
-// SidebarCategories - show top categories excluding uncategorized and consignment
+// SidebarCategories - show top categories excluding uncategorized and consignment (and their descendants)
 const { data } = await useAsyncGql('getProductCategories', { first: 20 });
+// Reuse shared excluded slugs state set by useProducts; fallback to base excludes synchronously
+const excluded = useState<string[]>('excludedCategorySlugs', () => ['uncategorized', 'consignment']);
 const categories = computed(() => (data.value?.productCategories?.nodes || []).filter((c: any) => {
   const slug = (c.slug || '').toLowerCase();
-  const name = (c.name || '').toLowerCase();
-  return slug !== 'uncategorized' && slug !== 'consignment' && name !== 'consignment';
+  return !excluded.value.includes(slug);
 }).slice(0, 8));
 </script>
 
