@@ -17,8 +17,8 @@ export default defineNuxtConfig({
         '/sitemap.xml',
         '/robots.txt',
         // Pre-render important category pages
-        '/product-category/t-shirt',
-        '/product-category/pokemon',
+        '/product-category/pokemon/',
+        '/product-category/custom/t-shirt/',
         '/products',
       ],
       failOnError: false,
