@@ -4,19 +4,27 @@ export default defineNuxtConfig({
 
   components: [{ path: './components', pathPrefix: false }],
 
-  /**
-   * Depending on your servers capabilities, you may need to adjust the following settings.
-   * It will affect the build time but also increase the reliability of the build process.
-   * If you have a server with a lot of memory and CPU, you can remove the following settings.
-   * @property {number} concurrency - How many pages to prerender at once
-   * @property {number} interval - How long to wait between prerendering pages
-   * @property {boolean} failOnError - This stops the build from failing but the page will not be statically generated
-   */
   nitro: {
+    // ISR (Incremental Static Regeneration) for large catalogs
+    // Product pages are generated on-first-request and cached, not pre-rendered
     prerender: {
-      concurrency: 10,
-      interval: 1000,
+      crawlLinks: true,
       failOnError: false,
+      // Only pre-render these static routes (not product pages)
+      routes: ['/sitemap.xml', '/robots.txt'],
+    },
+    routeRules: {
+      // Product pages: revalidate every hour (3600 seconds)
+      '/product/**': { swr: 3600 },
+      '/products/**': { swr: 3600 },
+      '/product-category/**': { swr: 3600 },
+      // Home and category pages: revalidate every 24 hours
+      '/': { swr: 86400 },
+      '/categories/**': { swr: 86400 },
+      // Static pages
+      '/cart': { cache: { maxAge: 0 } },
+      '/checkout': { cache: { maxAge: 0 } },
+      '/account/**': { cache: { maxAge: 0 } },
     },
   },
 });
