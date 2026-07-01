@@ -1,7 +1,6 @@
 {
-  "extends": "../.nuxt/tsconfig.json",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
       "#types/*": ["./app/types/*"],
@@ -10,10 +9,7 @@
       "#gql": ["./app/gql/index.ts"],
       "#gql/default": ["./app/gql/default.ts"],
       "#gql/*": ["./app/gql/*"]
-    },
-    "allowJs": true,
-    "types": ["@nuxt/image", "@nuxtjs/i18n"],
-    "strict": true
+    }
   },
-  "include": ["../.nuxt/nuxt.d.ts", "../.nuxt/types/**/*.d.ts", "../.nuxt/imports.d.ts", "./app/**/*", "./**/*.ts", "./**/*.vue"]
+  "include": ["./app/**/*", "./**/*.ts", "./**/*.vue"]
 }
