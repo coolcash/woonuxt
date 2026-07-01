@@ -5,18 +5,21 @@ export default defineNuxtConfig({
   components: [{ path: './components', pathPrefix: false }],
 
   /**
-   * For 2400+ products, optimize prerendering to avoid timeouts.
-   * Consider upgrading to Vercel or adding a server-side platform for true ISR.
-   * For now, we generate only essential pages and let others 404 gracefully.
+   * For 2400+ products, pre-render only essential pages to keep build fast.
+   * Add important category pages here to be cached during build.
    */
   nitro: {
     prerender: {
-      // Only pre-render static pages, not all products
+      // Only pre-render static pages and key categories
       crawlLinks: false,
       routes: [
         '/',
         '/sitemap.xml',
         '/robots.txt',
+        // Pre-render important category pages
+        '/product-category/t-shirt',
+        '/product-category/pokemon',
+        '/products',
       ],
       failOnError: false,
     },
