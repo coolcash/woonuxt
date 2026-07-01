@@ -12,4 +12,4 @@
 
 [images]
   # Replace with your own domain to allow remote images to be optimized
-  remote_images = ["https://b3313448.smushcdn.com/.*", "https://vine-and-dandy.com/.*"]
+  remote_images = ["https://b3313448.smushcdn.com/.*", "https://vine-and-dandy.com/.*", "https://www.vine-and-dandy.com/.*"]
