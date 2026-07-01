@@ -28,7 +28,7 @@ async function loadMore() {
   if (!pageInfo.value?.hasNextPage || loadingMore.value) return;
   loadingMore.value = true;
   try {
-    const res = await woo.getProducts({ after: pageInfo.value.endCursor, first: 48, slug: slug ? [slug] : undefined });
+    const res = await woo.getProducts({ after: pageInfo.value.endCursor, first: 10, slug: slug ? [slug] : undefined });
     const nodes = (res?.products?.nodes ?? []) as Product[];
     const newPage = res?.products?.pageInfo as any;
     setProducts([...(productsInCategory.value || []), ...nodes]);

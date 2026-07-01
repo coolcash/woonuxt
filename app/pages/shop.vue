@@ -27,7 +27,7 @@ async function loadMore() {
   if (!pageInfo.value?.hasNextPage || loadingMore.value) return;
   loadingMore.value = true;
   try {
-    const res = await woo.getProducts({ after: pageInfo.value.endCursor, first: 48 });
+    const res = await woo.getProducts({ after: pageInfo.value.endCursor, first: 10 });
     const nodes = (res?.products?.nodes ?? []) as Product[];
     const newPage = res?.products?.pageInfo as any;
     // append to global product store
