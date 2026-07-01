@@ -6,6 +6,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
+      LOGO: process.env.LOGO || 'https://vine-and-dandy.com/wp-content/uploads/2025/logo.png',
       'graphql-client': {
         clients: {
           default: {
@@ -31,6 +32,7 @@ export default defineNuxtConfig({
       routes: [
         '/',
         '/custom-designed-t-shirts',
+        '/product-category/trading-cards/',
       ],
       failOnError: false,
     },

@@ -6,8 +6,7 @@ const route = useRoute();
 <template>
   <nav>
     <NuxtLink to="/">{{ $t('general.home') }}</NuxtLink>
-    <NuxtLink to="/products">{{ $t('general.products') }}</NuxtLink>
-    <NuxtLink to="/categories">{{ $t('shop.category', 2) }}</NuxtLink>
+    <NuxtLink to="/shop">{{ $t('general.shop') || $t('general.products') }}</NuxtLink>
     <NuxtLink to="/contact">{{ $t('general.contact') }}</NuxtLink>
     <NuxtLink class="lg:hidden" to="/wishlist" :prefetch="false">Wishlist</NuxtLink>
     <NuxtLink class="lg:hidden" to="/my-account" :prefetch="false" @click="navigateToLogin(route.fullPath)">My Account</NuxtLink>

@@ -17,9 +17,18 @@ export function useProducts() {
       allProducts.value = [];
       return;
     }
-    products.value = [...newProducts];
-    allProducts.value = [...newProducts];
-  }
+
+      // Exclude unwanted categories globally
+      const excludeSlugs = ['uncategorized', 'consignment'];
+      const filtered = newProducts.filter((p) => {
+        const slugs = (p.productCategories?.nodes || []).map((n: any) => (n.slug || '').toLowerCase());
+        // Exclude if any category slug matches blacklist
+        return !slugs.some((s: string) => excludeSlugs.includes(s));
+      });
+
+      products.value = [...filtered];
+      allProducts.value = [...filtered];
+    }
 
   // Named function for product filtering pipeline
   function applyProductFilters(products: Product[]): Product[] {
