@@ -4,11 +4,11 @@
  * Below are the default values.
  */
 export default defineAppConfig({
-  siteName: 'WooNuxt',
-  shortDescription: 'This is an example of a WooNuxt store. It provides a modern, fast, and SEO friendly ecommerce store built with Nuxt and WooCommerce.',
-  description: `WooNuxt is unmatched when it comes to performance and scalability. Reap the benefits of having a online store that out performs all of your competitors. You can edit components to display your own information just like the one you're reading now.`,
-  baseUrl: 'https://v3.woonuxt.com',
-  siteImage: 'https://user-images.githubusercontent.com/5116925/218879668-f4c1f9fd-bef4-44b0-bc7f-e87d994aa3a1.png',
+  siteName: 'Vine & Dandy',
+  shortDescription: 'T-shirts as delightfully odd and irresistibly charming as the people who wear them.',
+  description: `Welcome to Vine & Dandy, home of T‑shirts as delightfully odd and irresistibly charming as the people who wear them. From Battle Unicorns and Whatever Floats Your Goat to The Mothman and Frog Prince, we blend comfort, chaos, and charisma in all the right ways. We also have a growing selection of singles, sealed, and graded cards available online, with more at our physical location.`,
+  baseUrl: 'https://store.vine-and-dandy.com',
+  siteImage: 'https://vine-and-dandy.com/wp-content/uploads/2025/logo.png',
   storeSettings: {
     autoOpenCart: false,
     // cartMode: 'optimistic' updates UI immediately; 'safe' waits for the server response.
@@ -16,7 +16,7 @@ export default defineAppConfig({
     showReviews: true,
     showFilters: true,
     showOrderByDropdown: true,
-    showSKU: true,
+    showSKU: false,
     showRelatedProducts: true,
     showProductCategoriesOnSingleProduct: true,
     showBreadcrumbOnSingleProduct: true,

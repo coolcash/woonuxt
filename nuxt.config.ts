@@ -19,6 +19,7 @@ export default defineNuxtConfig({
         // Pre-render important category pages
         '/product-category/pokemon/',
         '/product-category/custom/t-shirt/',
+        '/custom-designed-t-shirts',
         '/products',
       ],
       failOnError: false,
