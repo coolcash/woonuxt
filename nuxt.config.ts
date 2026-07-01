@@ -4,6 +4,22 @@ export default defineNuxtConfig({
 
   components: [{ path: './components', pathPrefix: false }],
 
+  runtimeConfig: {
+    public: {
+      'graphql-client': {
+        clients: {
+          default: {
+            // Use omit for cross-origin CORS - don't send credentials in preflight requests
+            fetchOptions: {
+              mode: 'cors',
+              credentials: 'omit',
+            },
+          },
+        },
+      },
+    },
+  },
+
   /**
    * For 2400+ products, pre-render only essential static pages.
    * Dynamic routes (categories, products) are generated on-demand from GraphQL.
