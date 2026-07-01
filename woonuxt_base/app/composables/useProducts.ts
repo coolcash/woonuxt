@@ -18,16 +18,70 @@ export function useProducts() {
       return;
     }
 
-      // Exclude unwanted categories globally
-      const excludeSlugs = ['uncategorized', 'consignment'];
-      const filtered = newProducts.filter((p) => {
-        const slugs = (p.productCategories?.nodes || []).map((n: any) => (n.slug || '').toLowerCase());
-        // Exclude if any category slug matches blacklist
-        return !slugs.some((s: string) => excludeSlugs.includes(s));
-      });
+      // Base excluded slugs
+      const baseExcludes = ['uncategorized', 'consignment'];
 
-      products.value = [...filtered];
-      allProducts.value = [...filtered];
+      // Shared state for computed excluded slugs (including descendants)
+      const excludedState = useState<string[]>('excludedCategorySlugs', () => []);
+
+      // Helper to compute excluded slugs by fetching all categories and checking ancestors
+      async function computeExcludedSlugs() {
+        try {
+          if (excludedState.value && excludedState.value.length) return excludedState.value;
+          const runtime = useRuntimeConfig();
+          const host = runtime.public?.['graphql-client']?.clients?.default?.host || process.env.GQL_HOST;
+          if (!host) return baseExcludes;
+
+          const query = `query AllCats($first: Int){ productCategories(first: $first) { nodes { slug ancestors { nodes { slug } } } } }`;
+
+          const res = await $fetch(host, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query, variables: { first: 200 } }),
+          });
+
+          const nodes = res?.data?.productCategories?.nodes || res?.productCategories?.nodes || [];
+          const excluded = new Set<string>(baseExcludes.map((s) => s.toLowerCase()));
+
+          for (const node of nodes) {
+            const slug = (node?.slug || '').toLowerCase();
+            const ancestors = (node?.ancestors?.nodes || []).map((a: any) => (a.slug || '').toLowerCase());
+            // If node slug is in base excludes or any ancestor is in base excludes, exclude this slug
+            if (baseExcludes.includes(slug) || ancestors.some((a: string) => baseExcludes.includes(a))) {
+              excluded.add(slug);
+            }
+          }
+
+          excludedState.value = Array.from(excluded);
+          return excludedState.value;
+        } catch (e) {
+          // On failure, fall back to baseExcludes
+          console.error('Failed to compute excluded category slugs:', e);
+          excludedState.value = baseExcludes;
+          return excludedState.value;
+        }
+      }
+
+      // Filter products synchronously if excluded slugs already computed; otherwise compute then filter asynchronously
+      const currentExcluded = excludedState.value && excludedState.value.length ? excludedState.value : baseExcludes;
+
+      const applyFilter = (excludes: string[]) => {
+        const filtered = newProducts.filter((p) => {
+          const slugs = (p.productCategories?.nodes || []).map((n: any) => (n.slug || '').toLowerCase());
+          return !slugs.some((s: string) => excludes.includes(s));
+        });
+        products.value = [...filtered];
+        allProducts.value = [...filtered];
+      };
+
+      if (currentExcluded === baseExcludes) {
+        // Compute excluded slugs asynchronously and then apply filter
+        computeExcludedSlugs().then((excludes) => applyFilter(excludes)).catch(() => applyFilter(baseExcludes));
+        // Meanwhile apply base filter to avoid empty UI
+        applyFilter(baseExcludes);
+      } else {
+        applyFilter(currentExcluded);
+      }
     }
 
   // Named function for product filtering pipeline
