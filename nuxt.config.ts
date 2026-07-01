@@ -5,22 +5,16 @@ export default defineNuxtConfig({
   components: [{ path: './components', pathPrefix: false }],
 
   /**
-   * For 2400+ products, pre-render only essential pages to keep build fast.
-   * Add important category pages here to be cached during build.
+   * For 2400+ products, pre-render only essential static pages.
+   * Dynamic routes (categories, products) are generated on-demand from GraphQL.
    */
   nitro: {
     prerender: {
-      // Only pre-render static pages and key categories
+      // Only pre-render static pages that don't depend on external data
       crawlLinks: false,
       routes: [
         '/',
-        '/sitemap.xml',
-        '/robots.txt',
-        // Pre-render important category pages
-        '/product-category/pokemon/',
-        '/product-category/custom/t-shirt/',
         '/custom-designed-t-shirts',
-        '/products',
       ],
       failOnError: false,
     },
